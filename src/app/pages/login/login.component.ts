@@ -45,6 +45,7 @@ export class LoginComponent {
         })
         .catch((error: any) => {
           console.error('Error en el login:', error);
+          this.isLoading.set(false);
         });
     }
   }
