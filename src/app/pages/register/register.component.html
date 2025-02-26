@@ -1,1 +1,27 @@
-<p>register works!</p>
+<div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+    <h2 class="text-xl font-semibold text-gray-700 text-center">Registro</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <ng-container *ngFor="let field of formFields; trackBy: trackById">
+            <app-input-text [id]="field.id" [type]="field.type" [placeholder]="field.placeholder"
+                [control]="registerForm.get(field.id) as FormControl" [icon]="field.icon">
+            </app-input-text>
+        </ng-container>
+
+        <p *ngIf="registerForm.errors?.mismatch && registerForm.get('confirmPassword')?.touched"
+            class="text-red-500 text-sm">
+            Las contraseñas no coinciden
+        </p>
+
+        <p *ngIf="errorMessage" class="text-red-500 text-sm">
+            {{ errorMessage }}
+        </p>
+
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            [disabled]="registerForm.invalid">
+            Registrarse
+        </button>
+
+    </form>
+</div>
