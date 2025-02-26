@@ -18,6 +18,7 @@ import { UserService } from '../../services/user.service';
 export class LoginComponent {
   loginForm!: FormGroup;
 
+  errorInLogin = signal<boolean>(false);
   isLoading = signal<boolean>(false);
 
   constructor(
@@ -45,6 +46,8 @@ export class LoginComponent {
         })
         .catch((error: any) => {
           console.error('Error en el login:', error);
+          this.errorInLogin.set(true);
+          this.isLoading.set(false);
         });
     }
   }
