@@ -1,43 +1,51 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
+import { Component, signal } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ErrorFieldComponent } from '../../components/error-field/error-field.component';
 import { User } from '../../interfaces/user.interface';
-import {RouterLink} from '@angular/router';
-
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, ErrorFieldComponent],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
   loginForm!: FormGroup;
 
-  constructor(private readonly fb: FormBuilder, private userService: UserService) {}
+  isLoading = signal<boolean>(false);
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
     this.loginForm = this.initForm();
   }
 
-
-
   onSubmit(): void {
     if (this.loginForm.valid) {
       const user: User = {
         username: this.loginForm.get('name')?.value,
-        password: this.loginForm.get('password')?.value
+        password: this.loginForm.get('password')?.value,
       };
 
+      this.isLoading.set(true);
 
-      this.userService.login(user).then(
-        (response: any) => {
+      this.userService
+        .login(user)
+        .then((response: any) => {
           console.log('Login exitoso:', response);
-        }
-      ).catch(
-        (error: any) => {
+        })
+        .catch((error: any) => {
           console.error('Error en el login:', error);
-        }
-      );
+        });
     }
   }
 
@@ -45,6 +53,6 @@ export class LoginComponent {
     return this.fb.group({
       name: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-    })
+    });
   }
 }
