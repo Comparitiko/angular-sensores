@@ -17,18 +17,6 @@ export class SensorService {
   public getSensors(plantationName: string) {
     let errorResponse = "";
 
-    const response = this.httpClient.get<Sensor[]>(this.apiUrl + '/sensors', {
-      params: {
-        name: plantationName
-      }
-    }).subscribe({
-      next: (resp: Sensor[]) => {
-        this.sensors.set(resp);
-      },
-      error: (error) => {
-        errorResponse = error;
-        console.error('Error en la obtención de sensores:', error);
-      }
-    })
+    return this.httpClient.get<Sensor[]>(this.apiUrl + '/plantations/name' + plantationName);
   }
 }

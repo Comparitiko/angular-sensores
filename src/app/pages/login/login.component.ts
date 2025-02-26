@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../user.service';
+import { UserService } from '../../services/user.service';
 import { User } from '../../interfaces/user.interface';
 
 
@@ -18,7 +18,7 @@ export class LoginComponent {
     this.loginForm = this.initForm();
   }
 
-  
+
 
   onSubmit(): void {
     if (this.loginForm.valid) {
@@ -39,7 +39,7 @@ export class LoginComponent {
       );
     }
   }
-  
+
   initForm(): FormGroup {
     return this.fb.group({
       name: ['', [Validators.required]],
