@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Plantation } from '../interfaces/plantation.interface';
 
 @Injectable({
@@ -10,11 +10,15 @@ export class PlantationsService {
 
   private http = inject(HttpClient);
 
-  private plantations = signal<Plantation[]>([]);
-
   public getPlantations() {
-    this.http.get<Plantation[]>(this.baseUrl).subscribe((plantations) => {
-      this.plantations.update((state) => [...state, ...plantations]);
-    });
+    return this.http.get<Plantation[]>(this.baseUrl);
+  }
+
+  public getPlantation(id: number) {
+    return this.http.get<Plantation>(`${this.baseUrl}/${id}`);
+  }
+
+  public createPlantation(plantation: Plantation) {
+    return this.http.post<Plantation>(this.baseUrl, plantation);
   }
 }
