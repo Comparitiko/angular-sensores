@@ -10,6 +10,7 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'plantations',
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -25,6 +26,7 @@ export const routes: Routes = [
       {
         path: '',
         component: PlantationsComponent,
+        pathMatch: 'full',
       },
       {
         path: ':plantationId/sensors',
