@@ -30,6 +30,7 @@ export class UserService {
    * En caso de error, almacena el mensaje de error en `errorResponse`.
    */
   async register(user: UserRegister){
+    let errorResponse = "";
 
     const response = this.httpClient.post<UserResponse>(this.apiUrl + '/auth/register', {
       username: user.username,
@@ -44,7 +45,7 @@ export class UserService {
         sessionStorage.setItem('token', resp.token);
         this.router.navigate(['/']);
       },
-      error: (error) => console.log(error)
+      error: (error) => errorResponse = error
     })
   }
 
