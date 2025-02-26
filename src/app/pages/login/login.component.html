@@ -5,6 +5,9 @@
                 <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white text-center">
                     Iniciar sesión
                 </h1>
+                @if (errorInLogin()) {
+                  <app-error-field>El usuario o la contraseña no son correctos.</app-error-field>
+                }
                 <form [formGroup]="loginForm" (submit)="onSubmit()" class="space-y-4 md:space-y-6" action="#">
                     <div>
                         <label for="name" class="block mb-2 text-sm font-medium text-white" >Nombre</label>
