@@ -4,10 +4,8 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-input-text',
-  standalone: true,  // 🔹 Indica que es standalone
   templateUrl: './input-text.component.html',
-  styleUrls: ['./input-text.component.css'],
-  imports: [CommonModule, ReactiveFormsModule] // 🔹 Importa lo necesario
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class InputTextComponent {
 getErrorMessage() {

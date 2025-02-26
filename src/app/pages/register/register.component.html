@@ -3,21 +3,27 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-        <ng-container *ngFor="let field of formFields; trackBy: trackById">
-            <app-input-text [id]="field.id" [type]="field.type" [placeholder]="field.placeholder"
-                [control]="registerForm.get(field.id) as FormControl" [icon]="field.icon">
-            </app-input-text>
-        </ng-container>
+        @for (field of formFields; track field.id) {
+        <app-input-text [id]="field.id" [type]="field.type" [placeholder]="field.placeholder"
+            [control]="getFormControl(field.id)" [icon]="field.icon">
+        </app-input-text>
+        }
 
-        <p *ngIf="registerForm.errors?.mismatch && registerForm.get('confirmPassword')?.touched"
-            class="text-red-500 text-sm">
-            Las contraseñas no coinciden
+        <!-- Mensaje de error si las contraseñas no coinciden -->
+        @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched) {
+        <p class="text-red-500 text-sm mt-2">
+            ⚠️ Las contraseñas no coinciden
         </p>
+        }
 
-        <p *ngIf="errorMessage" class="text-red-500 text-sm">
+        <!-- Mensaje de error si el formulario tiene algún otro error -->
+        @if (registerForm.invalid && registerForm.touched) {
+        <p class="text-red-500 text-sm">
             {{ errorMessage }}
         </p>
+        }
 
+        <!-- Botón de registro -->
         <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
             [disabled]="registerForm.invalid">
             Registrarse

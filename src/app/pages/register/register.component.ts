@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputTextComponent } from '../../components/input-text/input-text.component';
-import { AuthService } from '../../services/auth.service'; // Importa el servicio
-import { User } from '../../interfaces/user.interface'; // Importa la interfaz
 import { Router } from '@angular/router';
+import { UserService } from '@/app/services/user.service';
+import { UserRegister } from '@/app/interfaces/userRegister.interface';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
   imports: [CommonModule, ReactiveFormsModule, InputTextComponent]
 })
 export class RegisterComponent {
@@ -24,7 +23,7 @@ export class RegisterComponent {
     { id: 'confirmPassword', type: 'password', placeholder: 'Confirmar Contraseña', icon: 'assets/icons/lock.svg' }
   ];
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: UserService, private router: Router) {
     this.registerForm = this.fb.group(
       {
         username: ['', [Validators.required, Validators.minLength(1)]],
@@ -34,6 +33,11 @@ export class RegisterComponent {
       },
       { validators: this.passwordMatchValidator }
     );
+  }
+
+  // Método para obtener un FormControl desde el formulario
+  getFormControl(fieldId: string): FormControl {
+    return this.registerForm.get(fieldId) as FormControl;
   }
 
   // Validación para verificar que las contraseñas coincidan
@@ -46,29 +50,14 @@ export class RegisterComponent {
   // Método para enviar el formulario
   onSubmit() {
     if (this.registerForm.valid) {
-      const userData: User = {
+      const userData: UserRegister = {
         username: this.registerForm.value.username,
         email: this.registerForm.value.email,
-        password: this.registerForm.value.password
+        password: this.registerForm.value.password,
+        confirm_password: this.registerForm.value.confirmPassword
       };
 
-      this.authService.register(userData).subscribe({
-        next: () => {
-          console.log('Registro exitoso');
-          this.router.navigate(['/login']); // Redirige al login tras el registro
-        },
-        error: (err: { error: { message: string; }; }) => {
-          console.error('Error en el registro:', err);
-          this.errorMessage = err.error?.message || 'Error en el registro';
-        }
-      });
-    } else {
-      // Marca todos los campos como "Touched" para mostrar los mensajes de error
-      this.registerForm.markAllAsTouched();
+      this.authService.register(userData);
     }
-  }
-
-  trackById(index: number, field: { id: string }) {
-    return field.id;
   }
 }
