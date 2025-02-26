@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import * as repl from 'node:repl';
 import {User} from './interfaces/user.interface';
 import {UserResponse} from './interfaces/userResponse.interface';
+import {UserRegister} from './interfaces/userRegister.interface';
 @Injectable({
   providedIn: 'root'
 })
@@ -17,6 +18,16 @@ export class UserService {
   private apiUrl = 'https://sensores.comparitiko.dev/api';
 
   constructor() { }
+  /*---------REGISTRO-----------*/
+  async register(user: UserRegister){
+
+  }
+
+
+
+
+
+  /*---------LOGIN-----------*/
    /**
    * Función que envía una solicitud HTTP POST a la API para autenticar al usuario.
    * Si el login es exitoso:
@@ -27,9 +38,9 @@ export class UserService {
    * En caso de error, almacena el mensaje de error en `errorResponse`.
    */
   async login(user: User){
-    let errorResponse = "";
+     let errorResponse = "";
 
-    const response = this.httpClient.post<UserResponse>(this.apiUrl + '/login', {
+    const response = this.httpClient.post<UserResponse>(this.apiUrl + '/auth/login', {
       username: user.username,
       password: user.password
     })
