@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { Error404Component } from './pages/error404/error404.component';
 import { PlantationsComponent } from './pages/plantations/plantations.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -10,6 +10,7 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: 'plantations',
+    pathMatch: 'full',
   },
   {
     path: 'login',
@@ -25,6 +26,7 @@ export const routes: Routes = [
       {
         path: '',
         component: PlantationsComponent,
+        pathMatch: 'full',
       },
       {
         path: ':plantationId/sensors',

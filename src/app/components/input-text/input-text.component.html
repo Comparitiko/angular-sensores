@@ -1,0 +1,15 @@
+<div class="flex flex-col mb-6">
+    <label [for]="id" class="font-semibold text-gray-600">{{ placeholder }}</label>
+    <div class="relative">
+        @if (icon) {
+        <div class="inline-flex items-center absolute left-0 top-0 h-full w-10 text-gray-400">
+            <img [src]="icon" alt="icon" class="h-5 w-5">
+        </div>
+        }
+        <input [id]="id" [type]="type" [formControl]="control"
+            class="border border-gray-300 rounded-md px-4 py-2 w-full pl-12" [placeholder]="placeholder" />
+    </div>
+    @if (control.invalid && control.touched) {
+    <small class="text-red-500">{{ getErrorMessage() }}</small>
+    }
+</div>

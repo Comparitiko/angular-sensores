@@ -1,1 +1,33 @@
-<p>register works!</p>
+<div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+    <h2 class="text-xl font-semibold text-gray-700 text-center">Registro</h2>
+
+    <form [formGroup]="registerForm" (submit)="onSubmit()">
+
+        @for (field of formFields; track field.id) {
+        <app-input-text [id]="field.id" [type]="field.type" [placeholder]="field.placeholder"
+            [control]="getFormControl(field.id)" [icon]="field.icon">
+        </app-input-text>
+        }
+
+        <!-- Mensaje de error si las contraseñas no coinciden -->
+        @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched) {
+        <p class="text-red-500 text-sm mt-2">
+            ⚠️ Las contraseñas no coinciden
+        </p>
+        }
+
+        <!-- Mensaje de error si el formulario tiene algún otro error -->
+        @if (registerForm.invalid && registerForm.touched) {
+        <p class="text-red-500 text-sm">
+            {{ errorMessage }}
+        </p>
+        }
+
+        <!-- Botón de registro -->
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            [disabled]="registerForm.invalid">
+            Registrarse
+        </button>
+
+    </form>
+</div>
