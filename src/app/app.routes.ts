@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { Error404Component } from './pages/error404/error404.component';
-import { PlantationComponent } from './pages/plantation/plantation.component';
 import { PlantationsComponent } from './pages/plantations/plantations.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { SensorsComponent } from './pages/sensors/sensors.component';
 
 export const routes: Routes = [
   {
@@ -26,8 +26,8 @@ export const routes: Routes = [
         component: PlantationsComponent,
       },
       {
-        path: ':plantationId',
-        component: PlantationComponent,
+        path: ':plantationId/sensors',
+        component: SensorsComponent,
       },
     ],
     canActivate: [AuthGuard],
