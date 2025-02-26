@@ -1,7 +1,6 @@
 import {inject, Injectable, signal} from '@angular/core';
 import { Router } from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import * as repl from 'node:repl';
 import {User} from './interfaces/user.interface';
 import {UserResponse} from './interfaces/userResponse.interface';
 import {UserRegister} from './interfaces/userRegister.interface';
