@@ -1,7 +1,7 @@
 <div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
     <h2 class="text-xl font-semibold text-gray-700 text-center">Registro</h2>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="registerForm" (submit)="onSubmit()">
 
         @for (field of formFields; track field.id) {
         <app-input-text [id]="field.id" [type]="field.type" [placeholder]="field.placeholder"
