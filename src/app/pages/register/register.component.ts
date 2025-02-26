@@ -17,11 +17,12 @@ export class RegisterComponent {
   errorMessage: string = ''; 
 
   formFields = [
-    { id: 'username', type: 'text', placeholder: 'Nombre de usuario', icon: 'assets/icons/user.svg' },
-    { id: 'email', type: 'email', placeholder: 'Correo Electrónico', icon: 'assets/icons/email.svg' },
-    { id: 'password', type: 'password', placeholder: 'Contraseña', icon: 'assets/icons/lock.svg' },
-    { id: 'confirmPassword', type: 'password', placeholder: 'Confirmar Contraseña', icon: 'assets/icons/lock.svg' }
+    { id: 'username', type: 'text', placeholder: 'Nombre de usuario', iconComponent: 'user' },
+    { id: 'email', type: 'email', placeholder: 'Correo Electrónico', iconComponent: 'email' },
+    { id: 'password', type: 'password', placeholder: 'Contraseña', iconComponent: 'lock' },
+    { id: 'confirmPassword', type: 'password', placeholder: 'Confirmar Contraseña', iconComponent: 'lock' }
   ];
+  
 
   constructor(private fb: FormBuilder, private authService: UserService, private router: Router) {
     this.registerForm = this.fb.group(
