@@ -1,33 +1,83 @@
-<div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
-    <h2 class="text-xl font-semibold text-gray-700 text-center">Registro</h2>
+<section class="bg-gray-900">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
+            <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+                <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
+                    Crea tu cuenta
+                </h1>
+                <form [formGroup]="registerForm" (submit)="onSubmit()" class="space-y-4 md:space-y-6">
 
-    <form [formGroup]="registerForm" (submit)="onSubmit()">
+                    <!-- Nombre de usuario -->
+                    <div>
+                        <label for="username" class="block mb-2 text-sm font-medium text-white">Nombre de
+                            usuario</label>
+                        <input type="text" id="username" placeholder="Tu nombre"
+                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
+                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="username" required>
+                        @if (registerForm.get('username')?.touched &&
+                        registerForm.get('username')?.errors?.['required']) {
+                        <app-error-field>El nombre es obligatorio.</app-error-field>
+                        }
+                    </div>
 
-        @for (field of formFields; track field.id) {
-        <app-input-text [id]="field.id" [type]="field.type" [placeholder]="field.placeholder"
-            [control]="getFormControl(field.id)" [iconComponent]="field.iconComponent">
-        </app-input-text>
-        }
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block mb-2 text-sm font-medium text-white">Correo Electrónico</label>
+                        <input type="email" id="email" placeholder="correo@ejemplo.com"
+                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
+                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="email" required>
+                        @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
+                        <app-error-field>El correo es obligatorio.</app-error-field>
+                        }
+                        @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']) {
+                        <app-error-field>El formato del correo no es válido.</app-error-field>
+                        }
+                    </div>
 
-        <!-- Mensaje de error si las contraseñas no coinciden -->
-        @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched) {
-        <p class="text-red-500 text-sm mt-2">
-            ⚠️ Las contraseñas no coinciden
-        </p>
-        }
+                    <!-- Contraseña -->
+                    <div>
+                        <label for="password" class="block mb-2 text-sm font-medium text-white">Contraseña</label>
+                        <input type="password" id="password" placeholder="••••••••"
+                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
+                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="password" required>
+                        @if (registerForm.get('password')?.touched &&
+                        registerForm.get('password')?.errors?.['required']) {
+                        <app-error-field>La contraseña es obligatoria.</app-error-field>
+                        }
+                        @if (registerForm.get('password')?.touched &&
+                        registerForm.get('password')?.errors?.['minlength']) {
+                        <app-error-field>La contraseña debe tener al menos 6 caracteres.</app-error-field>
+                        }
+                    </div>
 
-        <!-- Mensaje de error si el formulario tiene algún otro error -->
-        @if (registerForm.invalid && registerForm.touched) {
-        <p class="text-red-500 text-sm">
-            {{ errorMessage }}
-        </p>
-        }
+                    <!-- Confirmar contraseña -->
+                    <div>
+                        <label for="confirmPassword" class="block mb-2 text-sm font-medium text-white">Confirmar
+                            Contraseña</label>
+                        <input type="password" id="confirmPassword" placeholder="••••••••"
+                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 
+                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="confirmPassword" required>
+                        @if (registerForm.get('confirmPassword')?.touched &&
+                        registerForm.get('confirmPassword')?.errors?.['required']) {
+                        <app-error-field>Debes confirmar tu contraseña.</app-error-field>
+                        }
+                        @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched) {
+                        <app-error-field>Las contraseñas no coinciden.</app-error-field>
+                        }
+                    </div>
 
-        <!-- Botón de registro -->
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            [disabled]="registerForm.invalid">
-            Registrarse
-        </button>
+                    <!-- Botón de registro -->
+                    <button type="submit" class="w-full bg-white hover:bg-gray-300 focus:ring-4 cursor-pointer focus:outline-none focus:ring-gray-300 
+                        font-medium rounded-lg text-sm px-5 py-2.5 text-center" [disabled]="registerForm.invalid">
+                        Registrarse
+                    </button>
 
-    </form>
-</div>
+                    <p class="text-sm font-light text-gray-400">
+                        ¿Ya tienes una cuenta? <a routerLink="/login"
+                            class="font-medium text-primary-600 hover:underline text-primary-500">Inicia sesión</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
