@@ -5,7 +5,7 @@
 
         @for (field of formFields; track field.id) {
         <app-input-text [id]="field.id" [type]="field.type" [placeholder]="field.placeholder"
-            [control]="getFormControl(field.id)" [icon]="field.icon">
+            [control]="getFormControl(field.id)" [iconComponent]="field.iconComponent">
         </app-input-text>
         }
 
