@@ -18,14 +18,35 @@ export class UserService {
   private apiUrl = 'https://sensores.comparitiko.dev/api';
 
   constructor() { }
+
   /*---------REGISTRO-----------*/
+  /**
+   * Registro de usuario.
+   * Si el registro es exitoso:
+   *  - Guarda el nombre de usuario y el token en `sessionStorage`.
+   *  - Actualiza el estado del usuario en la aplicación.
+   *  - Redirige a la página principal ('/').
+   *
+   * En caso de error, almacena el mensaje de error en `errorResponse`.
+   */
   async register(user: UserRegister){
 
+    const response = this.httpClient.post<UserResponse>(this.apiUrl + '/auth/register', {
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      confirm_password: user.confirm_password
+    })
+    response.subscribe({
+      next: (resp: UserResponse) => {
+        this.user.set(resp as UserResponse);
+        sessionStorage.setItem('username', resp.username);
+        sessionStorage.setItem('token', resp.token);
+        this.router.navigate(['/']);
+      },
+      error: (error) => console.log(error)
+    })
   }
-
-
-
-
 
   /*---------LOGIN-----------*/
    /**
@@ -57,14 +78,14 @@ export class UserService {
   }
 
   /**
-   * Devuelve el usuario actual
+   * Devuelve el usuario actual.
    */
   getUser(){
     return this.user;
   }
 
   /**
-   * Cuándo el usuario cierra la sesión, borramos la sesión y lo redirecionamos a la página de login
+   * Cuándo el usuario cierra la sesión, borramos la sesión y lo redirecionamos a la página de login.
    */
   logout(){
     sessionStorage.clear();
