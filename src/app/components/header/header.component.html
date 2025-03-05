@@ -1,13 +1,24 @@
-<header class="bg-gray-900 text-white py-2">
-    <nav>
-        <div class="flex items-center space-x-4">
-            <div>
-                🌿
+<header class="bg-gray-900 text-white py-4">
+    <nav class="container mx-auto px-4">
+        <div class="flex items-center justify-between">
+            <!-- Logo o ícono -->
+            <div class="flex items-center space-x-3">
+                <span class="text-2xl">🌿</span>
+                <span class="text-xl font-semibold">Sensores Angular</span> <!-- Nombre de la marca o proyecto -->
             </div>
-            <ul class="flex justify-center space-x-4">
-                <li><a routerLink="/plantations" class="hover:underline hover:text-gray-300">Plantations</a></li>
-                <li><button (click)="onLogout()"
-                        class="cursor-pointer hover:underline hover:text-gray-300">Logout</button></li>
+
+            <!-- Menú de navegación -->
+            <ul class="flex items-center space-x-6">
+                <li>
+                    <a routerLink="/plantations" class="hover:underline hover:text-gray-300 transition duration-300">
+                        Plantations
+                    </a>
+                </li>
+                <li>
+                    <button (click)="onLogout()" class="hover:underline hover:text-gray-300 transition duration-300">
+                        Logout
+                    </button>
+                </li>
             </ul>
         </div>
     </nav>
