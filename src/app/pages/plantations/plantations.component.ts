@@ -15,7 +15,7 @@ export class PlantationsComponent {
 
   constructor(private router: Router) {}
 
-  verSensores(plantationId: number): void {
+  viewSensors(plantationId: number): void {
     this.router.navigate(['/sensores', plantationId]);
   }
 
