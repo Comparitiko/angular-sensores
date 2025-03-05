@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FooterComponent } from '@/app/components/footer/footer.component';
 import { HeaderComponent } from '@/app/components/header/header.component';
 import { Plantation } from  '@/app/interfaces/plantation.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plantations',
@@ -11,5 +12,11 @@ import { Plantation } from  '@/app/interfaces/plantation.interface';
 export class PlantationsComponent {
 
   plantations: Plantation[] = [];
+
+  constructor(private router: Router) {}
+
+  verSensores(plantationId: number): void {
+    this.router.navigate(['/sensores', plantationId]);
+  }
 
 }
