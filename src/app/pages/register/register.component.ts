@@ -1,27 +1,36 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { UserService } from '@/app/services/user.service';
 import { UserRegister } from '@/app/interfaces/userRegister.interface';
-import { ErrorFieldComponent } from "../../components/error-field/error-field.component";
+import { UserService } from '@/app/services/user.service';
+import { Component, signal } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ErrorFieldComponent } from '../../components/error-field/error-field.component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [ErrorFieldComponent, ReactiveFormsModule],
+  imports: [ErrorFieldComponent, ReactiveFormsModule, RouterLink],
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-  errorMessage: string = ''; 
-  isSubmitting = false;
+  errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private authService: UserService, private router: Router) {
+  protected isLoading = signal<boolean>(false);
+  protected errorInRegister = signal<boolean>(false);
+
+  constructor(private fb: FormBuilder, private authService: UserService) {
     this.registerForm = this.fb.group(
       {
         username: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required]]
+        confirmPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator }
     );
@@ -34,25 +43,28 @@ export class RegisterComponent {
     return password === confirmPassword ? null : { mismatch: true };
   }
 
-  // Método para saber si está cargando
-  isLoading() {
-    return ;
-  }
-
   // Método para enviar el formulario
-  onSubmit() {
+  async onSubmit() {
     if (this.registerForm.valid) {
-      this.isSubmitting = true;
-      
       const userData: UserRegister = {
         username: this.registerForm.value.username,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
-        confirm_password: this.registerForm.value.confirmPassword
+        confirm_password: this.registerForm.value.confirmPassword,
       };
 
-      this.authService.register(userData)
-        
+      const res = await this.authService.register(userData);
+      res.subscribe({
+        next: (user) => {
+          this.authService.setUsername(user.username);
+          this.authService.setToken(user.token);
+        },
+
+        error: () => {
+          this.errorInRegister.set(true);
+          this.isLoading.set(false);
+        },
+      });
     }
   }
 }
