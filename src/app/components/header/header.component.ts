@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {RouterLink} from '@angular/router';
+import { UserService } from '@/app/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -9,5 +10,10 @@ import {RouterLink} from '@angular/router';
   templateUrl: './header.component.html'
 })
 export class HeaderComponent {
+  constructor(private userService: UserService) {}
+  
+  onLogout(): void {
+    this.userService.logout();
+  }
 
 }
