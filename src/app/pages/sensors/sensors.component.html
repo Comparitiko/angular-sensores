@@ -1,1 +1,58 @@
-<p>sensors works!</p>
+<app-header></app-header>
+<div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">
+        Sensores de la Plantación: {{ plantation.name }}
+    </h1>
+
+    <!-- Verificar si hay sensores disponibles -->
+    @if (!plantation.sensors.length) {
+    <div class="text-gray-600 text-center text-lg">
+        No hay sensores disponibles en esta plantación.
+    </div>
+    }
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Recorremos los sensores -->
+        @for (sensor of plantation.sensors; track sensor.id) {
+        <div class="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Barra de color dinámica según la unidad -->
+            <div [ngClass]="getColorClass(sensor.unit)" class="h-2"></div>
+
+            <div class="p-6 space-y-6">
+                <!-- Encabezado con icono y tipo de sensor -->
+                <div class="flex items-center space-x-3">
+                    <span class="text-4xl">{{ getIcon(sensor.unit) }}</span>
+                    <h2 class="text-2xl font-bold text-gray-900">{{ sensor.sensorType }}</h2>
+                </div>
+
+                <!-- Detalles del sensor -->
+                <div class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                    <div class="grid grid-cols-2 gap-2 text-gray-700 text-sm">
+                        <div class="font-medium text-gray-500">ID:</div>
+                        <div>{{ sensor.id }}</div>
+                        <div class="font-medium text-gray-500">Ubicación:</div>
+                        <div>{{ sensor.location }}</div>
+                        <div class="font-medium text-gray-500">Coordenadas:</div>
+                        <div>{{ sensor.latitude }}, {{ sensor.longitude }}</div>
+                        <div class="font-medium text-gray-500">Unidad:</div>
+                        <div>{{ sensor.unit }}</div>
+                        <div class="font-medium text-gray-500">Creado:</div>
+                        <div>{{ sensor.createdAt }}</div>
+                        <div class="font-medium text-gray-500">Actualizado:</div>
+                        <div>{{ sensor.updatedAt }}</div>
+                    </div>
+                </div>
+
+                <!-- Botón para ver detalles -->
+                <div class="text-center">
+                    <button
+                        class="w-full bg-blue-500 text-white font-medium py-2 rounded-lg shadow-md hover:bg-blue-600 transition-all">
+                        🔍 Ver detalles
+                    </button>
+                </div>
+            </div>
+        </div>
+        }
+    </div>
+</div>
+<app-footer></app-footer>
