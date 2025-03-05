@@ -9,12 +9,13 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { ErrorFieldComponent } from '../../components/error-field/error-field.component';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  imports: [ErrorFieldComponent, ReactiveFormsModule],
+  imports: [ErrorFieldComponent, ReactiveFormsModule, RouterLink],
 })
 export class RegisterComponent {
   registerForm: FormGroup;
