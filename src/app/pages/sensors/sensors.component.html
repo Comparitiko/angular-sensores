@@ -4,13 +4,6 @@
         Sensores de la Plantación: {{ plantation.name }}
     </h1>
 
-    <!-- Verificar si hay sensores disponibles -->
-    @if (!plantation.sensors.length) {
-    <div class="text-gray-600 text-center text-lg">
-        No hay sensores disponibles en esta plantación.
-    </div>
-    }
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <!-- Recorremos los sensores -->
         @for (sensor of plantation.sensors; track sensor.id) {
@@ -53,6 +46,14 @@
             </div>
         </div>
         }
+
+        <!-- Verificar si hay sensores disponibles -->
+        @if (!plantation.sensors.length) {
+        <div class="text-gray-600 text-center text-lg">
+            No hay sensores disponibles en esta plantación.
+        </div>
+        }
+
     </div>
 </div>
 <app-footer></app-footer>
