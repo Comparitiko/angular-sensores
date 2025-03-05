@@ -1,43 +1,39 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ReactiveFormsModule, FormControl } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { InputTextComponent } from '../../components/input-text/input-text.component';
-import { Router } from '@angular/router';
-import { UserService } from '@/app/services/user.service';
 import { UserRegister } from '@/app/interfaces/userRegister.interface';
+import { UserService } from '@/app/services/user.service';
+import { Component, signal } from '@angular/core';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ErrorFieldComponent } from '../../components/error-field/error-field.component';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
   templateUrl: './register.component.html',
-  imports: [CommonModule, ReactiveFormsModule, InputTextComponent]
+  imports: [ErrorFieldComponent, ReactiveFormsModule, RouterLink],
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-  errorMessage: string = ''; 
+  errorMessage: string = '';
 
-  formFields = [
-    { id: 'username', type: 'text', placeholder: 'Nombre de usuario', icon: 'assets/icons/user.svg' },
-    { id: 'email', type: 'email', placeholder: 'Correo Electrónico', icon: 'assets/icons/email.svg' },
-    { id: 'password', type: 'password', placeholder: 'Contraseña', icon: 'assets/icons/lock.svg' },
-    { id: 'confirmPassword', type: 'password', placeholder: 'Confirmar Contraseña', icon: 'assets/icons/lock.svg' }
-  ];
+  protected isLoading = signal<boolean>(false);
+  protected errorInRegister = signal<boolean>(false);
 
-  constructor(private fb: FormBuilder, private authService: UserService, private router: Router) {
+  constructor(private fb: FormBuilder, private authService: UserService) {
     this.registerForm = this.fb.group(
       {
-        username: ['', [Validators.required, Validators.minLength(1)]],
+        username: ['', [Validators.required, Validators.minLength(3)]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required]]
+        confirmPassword: ['', [Validators.required]],
       },
       { validators: this.passwordMatchValidator }
     );
-  }
-
-  // Método para obtener un FormControl desde el formulario
-  getFormControl(fieldId: string): FormControl {
-    return this.registerForm.get(fieldId) as FormControl;
   }
 
   // Validación para verificar que las contraseñas coincidan
@@ -48,16 +44,27 @@ export class RegisterComponent {
   }
 
   // Método para enviar el formulario
-  onSubmit() {
+  async onSubmit() {
     if (this.registerForm.valid) {
       const userData: UserRegister = {
         username: this.registerForm.value.username,
         email: this.registerForm.value.email,
         password: this.registerForm.value.password,
-        confirm_password: this.registerForm.value.confirmPassword
+        confirm_password: this.registerForm.value.confirmPassword,
       };
 
-      this.authService.register(userData);
+      const res = await this.authService.register(userData);
+      res.subscribe({
+        next: (user) => {
+          this.authService.setUsername(user.username);
+          this.authService.setToken(user.token);
+        },
+
+        error: () => {
+          this.errorInRegister.set(true);
+          this.isLoading.set(false);
+        },
+      });
     }
   }
 }

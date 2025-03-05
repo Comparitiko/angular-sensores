@@ -21,69 +21,31 @@ export class UserService {
   /*---------REGISTRO-----------*/
   /**
    * Registro de usuario.
-   * Si el registro es exitoso:
-   *  - Guarda el nombre de usuario y el token en `sessionStorage`.
-   *  - Actualiza el estado del usuario en la aplicación.
-   *  - Redirige a la página principal ('/').
-   *
-   * En caso de error, almacena el mensaje de error en `errorResponse`.
+   * Función que envía una solicitud HTTP POST a la API para registrar al usuario.
+   * Devuelve un objeto UserResponse con el nombre de usuario y el token.
    */
   async register(user: UserRegister){
-    let errorResponse = "";
 
-    const response = this.httpClient.post<UserResponse>(this.apiUrl + '/auth/register', {
+    return this.httpClient.post<UserResponse>(this.apiUrl + '/auth/register', {
       username: user.username,
       email: user.email,
       password: user.password,
       confirm_password: user.confirm_password
-    })
-    response.subscribe({
-      next: (resp: UserResponse) => {
-        this.user.set(resp as UserResponse);
-        sessionStorage.setItem('username', resp.username);
-        sessionStorage.setItem('token', resp.token);
-        this.router.navigate(['/']);
-      },
-      error: (error) => errorResponse = error
     })
   }
 
   /*---------LOGIN-----------*/
    /**
    * Función que envía una solicitud HTTP POST a la API para autenticar al usuario.
-   * Si el login es exitoso:
-   *  - Guarda el nombre de usuario y el token en `sessionStorage`.
-   *  - Actualiza el estado del usuario en la aplicación.
-   *  - Redirige a la página principal ('/').
-   *
-   * En caso de error, almacena el mensaje de error en `errorResponse`.
+    * Devuelve un objeto UserResponse con el nombre de usuario y el token.
    */
   async login(user: User){
-     let errorResponse = "";
 
-    const response = this.httpClient.post<UserResponse>(this.apiUrl + '/auth/login', {
+    return this.httpClient.post<UserResponse>(this.apiUrl + '/auth/login', {
       username: user.username,
       password: user.password
     })
-
-    response.subscribe({
-      next: (resp: UserResponse) => {
-        this.user.set(resp as UserResponse);
-        sessionStorage.setItem('username', resp.username);
-        sessionStorage.setItem('token', resp.token);
-        this.router.navigate(['/']);
-      },
-      error: (error) => errorResponse = error
-    })
   }
-
-  /**
-   * Devuelve el usuario actual.
-   */
-  getUser(){
-    return this.user;
-  }
-
   /**
    * Cuándo el usuario cierra la sesión, borramos la sesión y lo redirecionamos a la página de login.
    */
@@ -91,5 +53,30 @@ export class UserService {
     sessionStorage.clear();
 
     this.router.navigate(['/login']);
+  }
+
+  /**
+   * Guarda el token en `sessionStorage`.
+   * Redirigimos a la página principal.
+   * @param token
+   */
+  setToken (token: string) {
+    sessionStorage.setItem('token', token);
+
+    this.router.navigate(['/']);
+  }
+
+  /**
+   * Guarda el nombre de usuario en `sessionStorage`.
+   * @param username
+   */
+  setUsername (username: string) {
+    sessionStorage.setItem('username', username);
+  }
+  /**
+   * Devuelve el usuario actual.
+   */
+  getUser(){
+    return this.user;
   }
 }

@@ -14,9 +14,11 @@ export class SensorService {
 
   private sensors = signal<Sensor[]>([]);
 
-  public getSensors(plantationName: string) {
-    let errorResponse = "";
-
+  public getSensorsByPlantation(plantationName: string) {
     return this.httpClient.get<Sensor[]>(this.apiUrl + '/plantations/name' + plantationName);
+  }
+
+  public getSensorById(sensorId: number) {
+    return this.httpClient.get<Sensor>(this.apiUrl + '/sensors/' + sensorId);
   }
 }
