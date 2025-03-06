@@ -19,7 +19,7 @@ export class PlantationsComponent implements OnInit {
   protected isLoading = signal<boolean>(true);
 
   viewSensors(plantationId: number): void {
-    this.router.navigate(['/plantations/', plantationId , '/sensors']);
+    this.router.navigate(['/plantations/' + plantationId + '/sensors']);
   }
 
   async ngOnInit() {
