@@ -1,13 +1,48 @@
-
-
 <div class="p-10 bg-gradient-to-b from-blue-100 to-gray-100 min-h-screen">
-  <app-header/>
-  <div class="mx-auto bg-white p-8 rounded-3xl shadow-2xl">
-    <h2 class="text-4xl font-bold mb-8 text-gray-800 text-center">🌿 Datos del sensor: </h2>
-    <div>
-      <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>
+  <app-header></app-header>
+
+  <div class="mx-auto bg-white p-8 rounded-3xl shadow-2xl w-full max-w-4xl">
+    <h2 class="text-4xl font-bold mb-8 text-gray-800 text-center">🌿 Datos del Sensor</h2>
+
+    <!-- Display loading message while sensorData is empty -->
+    @if (sensorData.length === 0) {
+    <div class="text-center text-gray-600">
+      <p class="text-lg">Cargando datos del sensor...</p>
+    </div>
+    } @else {
+    <!-- Display the chart -->
+    <div class="flex justify-center">
+      <canvasjs-chart [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
     </div>
 
+    <!-- Display detailed data in a table -->
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold mb-4 text-gray-700 text-center">📊 Datos Recientes</h3>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-sm">
+          <thead class="bg-gray-200 text-gray-700">
+            <tr>
+              <th class="px-4 py-2 border">Fecha</th>
+              <th class="px-4 py-2 border">Temperatura (°C)</th>
+              <th class="px-4 py-2 border">Humedad (%)</th>
+              <th class="px-4 py-2 border">Presión (hPa)</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (data of sensorData; track data.date) {
+            <tr class="text-center border-b border-gray-300">
+              <td class="px-4 py-2 border">{{ data.date | date:'MMM dd, yyyy' }}</td>
+              <td class="px-4 py-2 border">{{ data.temperature ?? '--' }}</td>
+              <td class="px-4 py-2 border">{{ data.humidity ?? '--' }}</td>
+              <td class="px-4 py-2 border">{{ data.pressure ?? '--' }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
   </div>
+
   <app-footer></app-footer>
 </div>

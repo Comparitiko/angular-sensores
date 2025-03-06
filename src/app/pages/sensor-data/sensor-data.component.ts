@@ -1,64 +1,73 @@
-import { Component } from '@angular/core';
-import {CanvasJSAngularChartsModule} from '@canvasjs/angular-charts';
-import {HeaderComponent} from '@/app/components/header/header.component';
-import {FooterComponent} from '@/app/components/footer/footer.component';
+import { Component, OnInit } from '@angular/core';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { HeaderComponent } from '../../components/header/header.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { SensorDataService, SensorData } from '../../services/sensor-data.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-sensor-data',
-  imports: [CanvasJSAngularChartsModule, HeaderComponent, FooterComponent],
+  standalone: true,
+  imports: [CanvasJSAngularChartsModule, HeaderComponent, FooterComponent, DatePipe],
   templateUrl: './sensor-data.component.html'
 })
-export class SensorDataComponent {
-  chart: any;
+export class SensorDataComponent implements OnInit {
 
-  chartOptions = {
-    animationEnabled: true,
-    theme: "light2",
-    title:{
-      text: "Datos"
-    },
-    axisX:{
-      valueFormatString: "D MMM"
-    },
-    axisY: {
-      title: "Number of Sales"
-    },
-    toolTip: {
-      shared: true
-    },
-    legend: {
-      cursor: "pointer",
-      itemclick: function (e: any) {
-        if (typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-          e.dataSeries.visible = false;
-        } else {
-          e.dataSeries.visible = true;
+  sensorData: { date: Date; temperature: number | null; humidity: number | null; pressure: number | null }[] = [];
+
+  chartOptions: any;
+
+  constructor(private sensorDataService: SensorDataService) {}
+
+  ngOnInit(): void {
+    this.loadSensorData();
+  }
+
+  loadSensorData(): void {
+    const sensorId = 1; 
+    this.sensorDataService.getSensorData(sensorId).subscribe({
+      next: (response: SensorData) => {
+        this.sensorData = response.records.map((record: { values: { _time: string | number | Date; _field: string; _value: any; }; }) => ({
+          date: new Date(record.values._time),
+          temperature: record.values._field === 'temperature' ? record.values._value : null,
+          humidity: record.values._field === 'humidity' ? record.values._value : null,
+          pressure: record.values._field === 'pressure' ? record.values._value : null
+        }));
+        this.loadChartOptions();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  loadChartOptions(): void {
+    this.chartOptions = {
+      animationEnabled: true,
+      theme: "light2",
+      title: { text: "Datos del Sensor" },
+      axisX: { valueFormatString: "MMM DD, YYYY" },
+      axisY: { title: "Valores" },
+      toolTip: { shared: true },
+      legend: { cursor: "pointer" },
+      data: [
+        {
+          type: "line",
+          name: "Temperatura (°C)",
+          showInLegend: true,
+          dataPoints: this.sensorData.filter(d => d.temperature !== null).map(d => ({ x: d.date, y: d.temperature }))
+        },
+        {
+          type: "line",
+          name: "Humedad (%)",
+          showInLegend: true,
+          dataPoints: this.sensorData.filter(d => d.humidity !== null).map(d => ({ x: d.date, y: d.humidity }))
+        },
+        {
+          type: "line",
+          name: "Presión (hPa)",
+          showInLegend: true,
+          dataPoints: this.sensorData.filter(d => d.pressure !== null).map(d => ({ x: d.date, y: d.pressure }))
         }
-        e.chart.render();
-      }
-    },
-    data: [{
-      type: "line",
-      showInLegend: true,
-      name: "Projected Sales",
-      xValueFormatString: "MMM DD, YYYY",
-      dataPoints: [
-        { x: new Date(2021, 8, 1), y: 63 },
-        { x: new Date(2021, 8, 2), y: 69 },
-        { x: new Date(2021, 8, 3), y: 65 },
-        { x: new Date(2021, 8, 4), y: 70 },
-        { x: new Date(2021, 8, 5), y: 71 },
-        { x: new Date(2021, 8, 6), y: 65 },
-        { x: new Date(2021, 8, 7), y: 73 },
-        { x: new Date(2021, 8, 8), y: 86 },
-        { x: new Date(2021, 8, 9), y: 74 },
-        { x: new Date(2021, 8, 10), y: 75 },
-        { x: new Date(2021, 8, 11), y: 76 },
-        { x: new Date(2021, 8, 12), y: 84 },
-        { x: new Date(2021, 8, 13), y: 87 },
-        { x: new Date(2021, 8, 14), y: 76 },
-        { x: new Date(2021, 8, 15), y: 79 }
       ]
-    }]
+    };
   }
 }
