@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Plantation } from '../interfaces/plantation.interface';
+import { Sensor } from '../interfaces/sensor.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -20,5 +21,11 @@ export class PlantationsService {
 
   public createPlantation(plantation: Plantation) {
     return this.http.post<Plantation>(this.baseUrl, plantation);
+  }
+
+  public getSensorsByPlantation(plantationId: number) {
+    return this.http.get<Sensor[]>(
+      `${this.baseUrl}/${plantationId}/sensors/data`
+    );
   }
 }
