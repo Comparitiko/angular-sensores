@@ -11,8 +11,7 @@ import { Plantation } from '@/app/interfaces/plantation.interface';
   templateUrl: './sensors.component.html',
 })
 export class SensorComponent {
-  @Input() sensors!: Sensor;  // Recibe el objeto Sensor como entrada
-  @Input() plantation!: Plantation;  // Recibe un objeto Plantation como entrada
+  
 
    // Método para obtener la clase de color según la unidad
    getColorClass(unit: string): string {
@@ -37,4 +36,6 @@ export class SensorComponent {
         return '📡';
     }
   }
+
+
 }
