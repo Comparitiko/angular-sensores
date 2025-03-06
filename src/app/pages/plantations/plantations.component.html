@@ -1,1 +1,46 @@
-<p>plantations works!</p>
+
+<div class="p-10 bg-gradient-to-b from-blue-100 to-gray-100 min-h-screen">
+  <app-header/>
+  <div class="mx-auto bg-white p-8 rounded-3xl shadow-2xl">
+    <h2 class="text-4xl font-bold mb-8 text-gray-800 text-center">🌿 Gestión de Plantaciones</h2>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-200 shadow-md rounded-lg">
+        <thead>
+          <tr class="bg-blue-500 text-white uppercase text-sm leading-normal">
+            <th class="py-4 px-6 text-left">Nombre</th>
+            <th class="py-4 px-6 text-left">Ubicación</th>
+            <th class="py-4 px-6 text-left">País</th>
+            <th class="py-4 px-6 text-left">Provincia</th>
+            <th class="py-4 px-6 text-left">Ciudad</th>
+            <th class="py-4 px-6 text-left">Coordenadas</th>
+            <th class="py-4 px-6 text-left">Tipo</th>
+            <th class="py-4 px-6 text-center">Sensores</th>
+          </tr>
+        </thead>
+        <tbody class="text-gray-700 text-sm">
+          @for (plantation of plantations; track $index) {
+              <tr class="border-b border-gray-200 hover:bg-blue-50 transition-all">
+                  <td class="py-4 px-6">{{ plantation.name }}</td>
+                  <td class="py-4 px-6">{{ plantation.ubication }}</td>
+                  <td class="py-4 px-6">{{ plantation.country }}</td>
+                  <td class="py-4 px-6">{{ plantation.province }}</td>
+                  <td class="py-4 px-6">{{ plantation.city }}</td>
+                  <td class="py-4 px-6 text-blue-600">{{ plantation.coordinates }}</td>
+                  <td class="py-4 px-6">{{ plantation.plantationType }}</td>
+                  <td class="py-4 px-6 text-center">
+                    <button (click)="viewSensors(plantation.id)" class="bg-sky-500 text-white hover:bg-sky-600 font-bold py-2 px-4 rounded cursor-pointer">Ver</button>
+                  </td>
+                </tr>
+          }
+          @if ( plantations.length === 0 ) {
+              <tr>
+                  <td colSpan="8" class="text-center py-6 text-gray-500">No hay plantaciones registradas.</td>
+              </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>
