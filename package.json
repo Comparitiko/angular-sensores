@@ -21,6 +21,7 @@
     "@canvasjs/angular-charts": "^1.2.0",
     "@canvasjs/charts": "^3.12.4",
     "@tailwindcss/postcss": "^4.0.9",
+    "canvasjs": "^1.8.3",
     "chart.js": "^4.4.8",
     "ng-charts": "^1.0.0-alpha",
     "ng2-charts": "^8.0.0",
