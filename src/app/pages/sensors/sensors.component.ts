@@ -1,20 +1,46 @@
-import { Component, Input } from '@angular/core';
-import { Sensor } from '@/app/interfaces/sensor.interface';
-import { CommonModule } from '@angular/common';
-import { HeaderComponent } from "../../components/header/header.component";
-import { FooterComponent } from "../../components/footer/footer.component";
 import { Plantation } from '@/app/interfaces/plantation.interface';
+import { PlantationsService } from '@/app/services/plantations.service';
+import { CommonModule } from '@angular/common';
+import { Component, inject, Input, OnInit, signal } from '@angular/core';
+import { ErrorFieldComponent } from '../../components/error-field/error-field.component';
+import { FooterComponent } from '../../components/footer/footer.component';
+import { HeaderComponent } from '../../components/header/header.component';
 
 @Component({
   selector: 'app-sensor',
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [
+    CommonModule,
+    HeaderComponent,
+    FooterComponent,
+    ErrorFieldComponent,
+  ],
   templateUrl: './sensors.component.html',
 })
-export class SensorComponent {
-  
+export class SensorComponent implements OnInit {
+  @Input() plantationId!: number;
+  protected isLoading = signal<boolean>(true);
+  protected errorGettingPlatation = signal<boolean>(true);
+  protected plantation = signal<Plantation>({} as Plantation);
+  private plantationsService = inject(PlantationsService);
 
-   // Método para obtener la clase de color según la unidad
-   getColorClass(unit: string): string {
+  ngOnInit(): void {
+    const res = this.plantationsService.getPlantationById(this.plantationId);
+
+    res.subscribe({
+      next: (plantation) => {
+        this.plantation.set(plantation);
+        this.isLoading.set(false);
+      },
+
+      error: () => {
+        this.errorGettingPlatation.set(true);
+        this.isLoading.set(false);
+      },
+    });
+  }
+
+  // Método para obtener la clase de color según la unidad
+  getColorClass(unit: string): string {
     switch (unit) {
       case 'temperature':
         return 'bg-red-500';
@@ -36,6 +62,4 @@ export class SensorComponent {
         return '📡';
     }
   }
-
-
 }

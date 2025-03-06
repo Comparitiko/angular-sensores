@@ -30,11 +30,11 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: ':plantationName/sensors',
+        path: ':plantationId/sensors',
         component: SensorComponent,
       },
       {
-        path: ':plantationName/sensors/:sensorId',
+        path: ':plantationId/sensors/:sensorId',
         component: SensorDataComponent,
       },
     ],
