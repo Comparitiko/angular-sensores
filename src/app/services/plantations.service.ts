@@ -7,25 +7,17 @@ import { Sensor } from '../interfaces/sensor.interface';
   providedIn: 'root',
 })
 export class PlantationsService {
-  private baseUrl = 'https://sensores.comparitiko.dev/api/plantations';
+  private baseUrl = 'https://sensores.comparitiko.dev/api';
 
   private http = inject(HttpClient);
 
   public getPlantations() {
-    return this.http.get<Plantation[]>(this.baseUrl);
-  }
-
-  public getPlantation(id: number) {
-    return this.http.get<Plantation>(`${this.baseUrl}/${id}`);
-  }
-
-  public createPlantation(plantation: Plantation) {
-    return this.http.post<Plantation>(this.baseUrl, plantation);
+    return this.http.get<Plantation[]>(`${this.baseUrl}/plantations`);
   }
 
   public getSensorsByPlantation(plantationId: number) {
     return this.http.get<Sensor[]>(
-      `${this.baseUrl}/${plantationId}/sensors/data`
+      `${this.baseUrl}/sensors/plantation/${plantationId}`
     );
   }
 }

@@ -12,8 +12,6 @@ export class SensorService {
 
   private httpClient = inject(HttpClient);
 
-  private sensors = signal<Sensor[]>([]);
-
   public getSensorsByPlantation(plantationName: string) {
     return this.httpClient.get<Sensor[]>(this.apiUrl + '/plantations/name' + plantationName);
   }
