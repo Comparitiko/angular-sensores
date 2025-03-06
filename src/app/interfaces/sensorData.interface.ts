@@ -1,3 +1,8 @@
+export interface SensorDataResponse {
+  [key: number]: SensorData;
+}
+
+
 export interface SensorData {
     columns:  Column[];
     records:  Record[];

@@ -1,17 +1,19 @@
+@let sensorData = this.sensorData();
+
+
 <div class="p-10 bg-gradient-to-b from-blue-100 to-gray-100 min-h-screen">
   <app-header></app-header>
 
   <div class="mx-auto bg-white p-8 rounded-3xl shadow-2xl w-full max-w-4xl">
-    <h2 class="text-4xl font-bold mb-8 text-gray-800 text-center">🌿 Datos del Sensor</h2>
 
     <!-- Display loading message while sensorData is empty -->
     @if (sensorData.length === 0) {
-    <div class="text-center text-gray-600">
-      <p class="text-lg">Cargando datos del sensor...</p>
-    </div>
+      <div class="text-center text-gray-600">
+        <p class="text-lg">Cargando datos del sensor...</p>
+      </div>
     } @else {
     <!-- Display the chart -->
-    <div class="flex justify-center">
+    <div>
       <canvasjs-chart [options]="chartOptions" [styles]="{ width: '100%', height: '360px' }"></canvasjs-chart>
     </div>
 
@@ -23,18 +25,14 @@
           <thead class="bg-gray-200 text-gray-700">
             <tr>
               <th class="px-4 py-2 border">Fecha</th>
-              <th class="px-4 py-2 border">Temperatura (°C)</th>
-              <th class="px-4 py-2 border">Humedad (%)</th>
-              <th class="px-4 py-2 border">Presión (hPa)</th>
+              <th class="px-4 py-2 border">{{ this.translate() }}</th>
             </tr>
           </thead>
           <tbody>
             @for (data of sensorData; track data.date) {
             <tr class="text-center border-b border-gray-300">
               <td class="px-4 py-2 border">{{ data.date | date:'MMM dd, yyyy' }}</td>
-              <td class="px-4 py-2 border">{{ data.temperature ?? '--' }}</td>
-              <td class="px-4 py-2 border">{{ data.humidity ?? '--' }}</td>
-              <td class="px-4 py-2 border">{{ data.pressure ?? '--' }}</td>
+              <td class="px-4 py-2 border">{{ data[this.sensorType] ?? '--' }}</td>
             </tr>
             }
           </tbody>

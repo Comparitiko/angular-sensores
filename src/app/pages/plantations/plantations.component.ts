@@ -29,12 +29,10 @@ export class PlantationsComponent implements OnInit {
       next: (plant: Plantation[]) => {
         this.plantations.set(plant);
         this.isLoading.set(false);
-        console.log(plant);
       },
       error: () => {
         this.error.set(true);
         this.isLoading.set(false);
-        console.log('error');
       },
     });
   }

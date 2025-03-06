@@ -11,9 +11,10 @@ import { UserService } from '@/app/services/user.service';
 })
 export class HeaderComponent {
   constructor(private userService: UserService) {}
-  
+
   onLogout(): void {
     this.userService.logout();
   }
 
+  protected readonly history = history;
 }

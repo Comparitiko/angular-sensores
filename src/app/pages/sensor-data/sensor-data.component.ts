@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit, signal} from '@angular/core';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { SensorDataService, SensorData } from '../../services/sensor-data.service';
+import { SensorDataService} from '../../services/sensor-data.service';
+import { SensorDataResponse} from '../../interfaces/sensorData.interface';
 import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-sensor-data',
@@ -13,7 +15,11 @@ import { DatePipe } from '@angular/common';
 })
 export class SensorDataComponent implements OnInit {
 
-  sensorData: { date: Date; temperature: number | null; humidity: number | null; pressure: number | null }[] = [];
+  @Input() sensorId!: number;
+  protected isLoading = signal<boolean>(true);
+  protected error = signal<boolean>(false);
+  sensorData = signal<any>({} as any);
+  protected sensorType: string = "";
 
   chartOptions: any;
 
@@ -24,26 +30,53 @@ export class SensorDataComponent implements OnInit {
   }
 
   loadSensorData(): void {
-    const sensorId = 1; 
-    this.sensorDataService.getSensorData(sensorId).subscribe({
-      next: (response: SensorData) => {
-        this.sensorData = response.records.map((record: { values: { _time: string | number | Date; _field: string; _value: any; }; }) => ({
+
+    // @ts-ignore
+    this.sensorDataService.getSensorData(this.sensorId).subscribe({
+      complete(): void {
+      },
+      next: (response: SensorDataResponse) => {
+        if (!response[0]) {
+          this.error.set(true);
+          return;
+        }
+
+        this.sensorType = response[0].records[0].values._measurement;
+
+        const data = response[0].records.map((record) => ({
           date: new Date(record.values._time),
-          temperature: record.values._field === 'temperature' ? record.values._value : null,
-          humidity: record.values._field === 'humidity' ? record.values._value : null,
-          pressure: record.values._field === 'pressure' ? record.values._value : null
+          [record.values._measurement]: record.values._value
         }));
+
+        this.sensorData.set(data);
+        this.isLoading.set(false);
         this.loadChartOptions();
       },
-      error: (err) => console.error(err)
+      error: () => {
+        this.error.set(true);
+        this.isLoading.set(false);
+      }
     });
+  }
+  translate(): string {
+    switch (this.sensorType.toLowerCase()) {
+      case 'temperature':
+        return 'Temperatura';
+      case 'humidity':
+        return 'Humedad';
+      case 'pressure':
+        return 'Presión';
+      default:
+        return 'Sensor';
+    }
   }
 
   loadChartOptions(): void {
+
     this.chartOptions = {
       animationEnabled: true,
       theme: "light2",
-      title: { text: "Datos del Sensor" },
+      title: { text: "🌿 Datos del Sensor" },
       axisX: { valueFormatString: "MMM DD, YYYY" },
       axisY: { title: "Valores" },
       toolTip: { shared: true },
@@ -51,22 +84,13 @@ export class SensorDataComponent implements OnInit {
       data: [
         {
           type: "line",
-          name: "Temperatura (°C)",
+          name: this.translate(),
           showInLegend: true,
-          dataPoints: this.sensorData.filter(d => d.temperature !== null).map(d => ({ x: d.date, y: d.temperature }))
+          dataPoints: this.sensorData().map((data: { [x: string]: any; date: any; }) => ({
+            x: data.date,
+            y: data[this.sensorType]
+          }))
         },
-        {
-          type: "line",
-          name: "Humedad (%)",
-          showInLegend: true,
-          dataPoints: this.sensorData.filter(d => d.humidity !== null).map(d => ({ x: d.date, y: d.humidity }))
-        },
-        {
-          type: "line",
-          name: "Presión (hPa)",
-          showInLegend: true,
-          dataPoints: this.sensorData.filter(d => d.pressure !== null).map(d => ({ x: d.date, y: d.pressure }))
-        }
       ]
     };
   }

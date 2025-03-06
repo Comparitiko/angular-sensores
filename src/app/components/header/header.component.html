@@ -2,7 +2,12 @@
     <nav class="container mx-auto px-4">
         <div class="flex items-center justify-between">
             <!-- Logo o ícono con enlace -->
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-3 gap-5">
+              <a (click)="history.back()" class="cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </a>
                 <a routerLink="/" class="flex items-center space-x-3 hover:text-gray-300 transition duration-300">
                     <span class="text-4xl">📡</span>
                     <span class="text-4xl font-semibold">Sensores Angular</span>
@@ -14,15 +19,15 @@
                 <li>
                     <a routerLink="/plantations"
                         class="flex items-center space-x-2 hover:underline hover:text-gray-300 transition duration-300">
-                        <span>🌿</span>
-                        <span>Plantaciones</span>
+                        <span class="text-2xl">🌿</span>
+                        <span class="text-2xl font-bold">Plantaciones</span>
                     </a>
                 </li>
                 <li>
                     <button (click)="onLogout()"
                         class="flex items-center space-x-2 hover:underline hover:text-gray-300 transition duration-300 cursor-pointer">
-                        <span>🚪</span>
-                        <span>Cerrar sesión</span>
+                        <span class="text-2xl">🚪</span>
+                        <span class="text-2xl font-bold">Cerrar sesión</span>
                     </button>
                 </li>
             </ul>

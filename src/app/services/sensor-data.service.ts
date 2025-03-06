@@ -7,7 +7,7 @@ import { SensorData } from '../interfaces/sensorData.interface';
   providedIn: 'root'
 })
 export class SensorDataService {
-  
+
   // URL de la API
   private apiUrl = 'https://sensores.comparitiko.dev/api';
 
@@ -21,5 +21,5 @@ export class SensorDataService {
     );
   }
 }
-export type { SensorData };
+
 
