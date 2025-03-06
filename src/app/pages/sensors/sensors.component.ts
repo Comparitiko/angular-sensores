@@ -1,4 +1,4 @@
-import { Sensor } from '@/app/interfaces/sensor.interface';
+import { Plantation } from '@/app/interfaces/plantation.interface';
 import { PlantationsService } from '@/app/services/plantations.service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit, signal } from '@angular/core';
@@ -19,20 +19,22 @@ import { HeaderComponent } from '../../components/header/header.component';
 export class SensorComponent implements OnInit {
   @Input() plantationId!: number;
   protected isLoading = signal<boolean>(true);
-  protected errorGettingSensors = signal<boolean>(true);
-  protected sensors = signal<Sensor[]>([]);
+  protected errorGettingPlatation = signal<boolean>(true);
+  protected plantation = signal<Plantation>({} as Plantation);
   private plantationsService = inject(PlantationsService);
 
   ngOnInit(): void {
-    const res = this.plantationsService.getSensorsByPlantation(
-      this.plantationId
-    );
+    const res = this.plantationsService.getPlantationById(this.plantationId);
 
     res.subscribe({
-      next: (sensors) => {},
+      next: (plantation) => {
+        this.plantation.set(plantation);
+        this.isLoading.set(false);
+      },
 
       error: () => {
-        console.log('error');
+        this.errorGettingPlatation.set(true);
+        this.isLoading.set(false);
       },
     });
   }

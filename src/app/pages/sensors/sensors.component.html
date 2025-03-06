@@ -1,19 +1,18 @@
 <app-header></app-header>
 <div class="container mx-auto p-6">
-    <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">
-        Sensores de la Plantación: {{ plantation.name }}
-    </h1>
-
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      @if (errorGettingSensors()) {
+      @if (errorGettingPlatation()) {
         <app-error-field>No se han podido recuperar los sensores, intente de nuevo mas tarde</app-error-field>
       }
 
       @if (isLoading()) {
         <h3>Cargando...</h3>
-      } @else {
+      } @else if (plantation()) {
+        <h1 class="text-3xl font-bold text-gray-900 text-center mb-6">
+          Sensores de la Plantación: {{ plantation().name }}
+        </h1>
         <!-- Recorremos los sensores -->
-        @for (sensor of plantation.sensors; track sensor.id) {
+        @for (sensor of plantation().sensors; track sensor.id) {
           <div class="w-full max-w-md bg-white rounded-xl shadow-lg overflow-hidden">
               <!-- Barra de color dinámica según la unidad -->
               <div [ngClass]="getColorClass(sensor.unit)" class="h-2"></div>

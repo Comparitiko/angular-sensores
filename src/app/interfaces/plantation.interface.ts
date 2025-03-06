@@ -11,8 +11,3 @@ export interface Plantation {
   plantationType: string;
   sensors: Sensor[];
 }
-
-export interface Plantation {
-  name: string;
-  sensors: Sensor[];
-}
