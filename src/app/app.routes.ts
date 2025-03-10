@@ -34,7 +34,7 @@ export const routes: Routes = [
         component: SensorComponent,
       },
       {
-        path: ':plantationId/sensors/:sensorId',
+        path: 'sensors/:sensorId',
         component: SensorDataComponent,
       },
     ],
