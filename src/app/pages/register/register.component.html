@@ -1,8 +1,8 @@
-<section class="bg-gray-900">
+<section class="bg-gray-300">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto min-h-screen lg:py-0">
-        <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-800 border-gray-700">
+      <div class="w-full rounded-lg shadow border md:mt-0 sm:max-w-md xl:p-0 bg-gray-100 border-gray-200">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-                <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-white">
+                <h1 class="text-xl font-bold leading-tight tracking-tight md:text-2xl text-black text-center">
                     Crea tu cuenta
                 </h1>
                 @if (errorInRegister()) {
@@ -12,11 +12,10 @@
 
                     <!-- Nombre de usuario -->
                     <div>
-                        <label for="username" class="block mb-2 text-sm font-medium text-white">Nombre de
+                        <label for="username" class="block mb-2 text-sm font-medium text-black">Nombre de
                             usuario</label>
                         <input type="text" id="username" placeholder="Tu nombre"
-                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
-                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="username" required>
+                        class="border rounded-lg block w-full p-2.5 bg-gray-300 border-gray-500 placeholder-gray-500 text-black focus:ring-blue-500 focus:border-blue-500" formControlName="username" required>
                         @if (registerForm.get('username')?.touched &&
                         registerForm.get('username')?.errors?.['required']) {
                         <app-error-field>El nombre es obligatorio.</app-error-field>
@@ -25,10 +24,9 @@
 
                     <!-- Email -->
                     <div>
-                        <label for="email" class="block mb-2 text-sm font-medium text-white">Correo Electrónico</label>
+                        <label for="email" class="block mb-2 text-sm font-medium text-black">Correo Electrónico</label>
                         <input type="email" id="email" placeholder="correo@ejemplo.com"
-                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
-                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="email" required>
+                        class="border rounded-lg block w-full p-2.5 bg-gray-300 border-gray-500 placeholder-gray-500 text-black focus:ring-blue-500 focus:border-blue-500" formControlName="email" required>
                         @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['required']) {
                         <app-error-field>El correo es obligatorio.</app-error-field>
                         }
@@ -39,10 +37,9 @@
 
                     <!-- Contraseña -->
                     <div>
-                        <label for="password" class="block mb-2 text-sm font-medium text-white">Contraseña</label>
+                        <label for="password" class="block mb-2 text-sm font-medium text-black">Contraseña</label>
                         <input type="password" id="password" placeholder="••••••••"
-                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
-                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="password" required>
+                        class="border rounded-lg block w-full p-2.5 bg-gray-300 border-gray-500 placeholder-gray-500 text-black focus:ring-blue-500 focus:border-blue-500" formControlName="password" required>
                         @if (registerForm.get('password')?.touched &&
                         registerForm.get('password')?.errors?.['required']) {
                         <app-error-field>La contraseña es obligatoria.</app-error-field>
@@ -55,11 +52,10 @@
 
                     <!-- Confirmar contraseña -->
                     <div>
-                        <label for="confirmPassword" class="block mb-2 text-sm font-medium text-white">Confirmar
+                        <label for="confirmPassword" class="block mb-2 text-sm font-medium text-black">Confirmar
                             Contraseña</label>
                         <input type="password" id="confirmPassword" placeholder="••••••••"
-                            class="border rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5
-                            bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500" formControlName="confirmPassword" required>
+                        class="border rounded-lg block w-full p-2.5 bg-gray-300 border-gray-500 placeholder-gray-500 text-black focus:ring-blue-500 focus:border-blue-500" formControlName="confirmPassword" required>
                         @if (registerForm.get('confirmPassword')?.touched &&
                         registerForm.get('confirmPassword')?.errors?.['required']) {
                         <app-error-field>Debes confirmar tu contraseña.</app-error-field>
@@ -70,8 +66,7 @@
                     </div>
 
                     <!-- Botón de registro -->
-                    <button type="submit" class="w-full bg-white hover:bg-gray-300 focus:ring-4 cursor-pointer focus:outline-none focus:ring-gray-300
-                        font-medium rounded-lg text-sm px-5 py-2.5 text-center" [disabled]="registerForm.invalid">
+                    <button type="submit" class="w-full bg-slate-500 text-white focus:ring-4 cursor-pointer focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:bg-slate-600 hover:shadow-2xl" [disabled]="registerForm.invalid">
                         @if (!isLoading()) {
                           Registrarse
                         } @else {
@@ -79,9 +74,9 @@
                         }
                     </button>
 
-                    <p class="text-sm font-light text-gray-400">
+                    <p class="text-sm font-light text-gray-600">
                         ¿Ya tienes una cuenta? <a routerLink="/login"
-                            class="font-medium text-primary-600 hover:underline text-primary-500">Inicia sesión</a>
+                        class="font-bold hover:underline hover:text-gray-800">Inicia sesión</a>
                     </p>
                 </form>
             </div>
