@@ -1,7 +1,7 @@
 import { Injectable} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SensorData } from '../interfaces/sensorData.interface';
+import {SaveData, SensorData} from '../interfaces/sensorData.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,18 @@ export class SensorDataService {
       `${this.apiUrl}/sensors/data/${sensor_id}`
     );
   }
+
+  /**
+   * Guardamos datos de un sensor, le pasamos el id y el valor.
+   * @param sensorSave
+   */
+  saveData(sensorSave: SaveData): Observable<SensorData> {
+    return this.httpClient.post<SensorData>(`${this.apiUrl}/sensors/data`, {
+        ...sensorSave
+      });
+  }
+
+
 }
 
 

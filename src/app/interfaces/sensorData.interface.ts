@@ -2,6 +2,11 @@ export interface SensorDataResponse {
   [key: number]: SensorData;
 }
 
+export interface SaveData{
+  sensor_id: number;
+  value: number;
+}
+
 
 export interface SensorData {
     columns:  Column[];
