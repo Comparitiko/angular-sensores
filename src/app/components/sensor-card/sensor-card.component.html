@@ -30,10 +30,14 @@
     </div>
 
     <!-- Botón para ver detalles -->
-    <div class="text-center">
+    <div class="text-center flex gap-3">
       <a routerLink="/plantations/sensors/{{sensor.id}}"
         class="w-full bg-blue-500 text-white font-medium px-4 py-2 rounded-lg shadow-md hover:bg-blue-600 transition-all">
         🔍 Ver detalles
+      </a>
+      <a routerLink="/plantations/sensors/{{sensor.id}}/data"
+         class="w-full bg-green-500 text-white font-medium px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition-all">
+        🔍 Añadir datos
       </a>
     </div>
   </div>

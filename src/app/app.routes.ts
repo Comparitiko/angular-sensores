@@ -6,6 +6,7 @@ import { PlantationsComponent } from './pages/plantations/plantations.component'
 import { RegisterComponent } from './pages/register/register.component';
 import { SensorDataComponent } from './pages/sensor-data/sensor-data.component';
 import { SensorComponent } from './pages/sensors/sensors.component';
+import {NewDataComponent} from '@/app/pages/new-data/new-data.component';
 
 export const routes: Routes = [
   {
@@ -37,6 +38,10 @@ export const routes: Routes = [
         path: 'sensors/:sensorId',
         component: SensorDataComponent,
       },
+      {
+        path: 'sensors/:sensorId/data',
+        component: NewDataComponent,
+      }
     ],
     canActivate: [AuthGuard],
   },

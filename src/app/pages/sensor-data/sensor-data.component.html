@@ -30,10 +30,10 @@
           </thead>
           <tbody>
             @for (data of sensorData; track data.date) {
-            <tr class="text-center border-b border-gray-300">
-              <td class="px-4 py-2 border">{{ data.date | date:'MMM dd, yyyy' }}</td>
-              <td class="px-4 py-2 border">{{ data[this.sensorType] ?? '--' }}</td>
-            </tr>
+              <tr class="text-center border-b border-gray-300">
+                <td class="px-4 py-2 border">{{ data.date | date:'MMM dd, yyyy' }}</td>
+                <td class="px-4 py-2 border">{{ data[this.sensorType] ?? '--' }}</td>
+              </tr>
             }
           </tbody>
         </table>
