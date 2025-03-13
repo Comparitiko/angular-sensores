@@ -18,16 +18,28 @@ import { SensorDataService } from '../../services/sensor-data.service';
   templateUrl: './sensor-data.component.html',
 })
 export class SensorDataComponent implements OnInit {
+
+  // Recibe el ID del sensor desde el componente padre
   @Input() sensorId!: number;
+
+  // Estado para indicar si los datos están cargando
   protected isLoading = signal<boolean>(true);
+
+  // Estado para indicar si ocurrió un error al cargar los datos
   protected error = signal<boolean>(false);
+
+  // Datos del sensor
   sensorData = signal<any>({} as any);
+
+  // Tipo de sensor
   protected sensorType: string = '';
 
+  // Opciones del gráfico
   chartOptions: any;
 
   constructor(private sensorDataService: SensorDataService) {}
 
+  // Llama a la función para cargar datos cuando el componente se inicializa
   ngOnInit(): void {
     this.loadSensorData();
   }
@@ -42,16 +54,17 @@ export class SensorDataComponent implements OnInit {
           return;
         }
 
-        this.sensorType = response[0].records[0].values._measurement;
+      // Obtiene el tipo de sensor
+      this.sensorType = response[0].records[0].values._measurement;
 
-        const data = response[0].records.map((record) => ({
-          date: new Date(record.values._time),
-          [record.values._measurement]: record.values._value,
-        }));
+      const data = response[0].records.map((record) => ({
+        date: new Date(record.values._time),
+        [record.values._measurement]: record.values._value,
+      }));
 
-        this.sensorData.set(data);
-        this.isLoading.set(false);
-        this.loadChartOptions();
+      this.sensorData.set(data); // Guarda los datos en la variable reactiva
+      this.isLoading.set(false); // Indica que la carga ha finalizado
+      this.loadChartOptions(); // Llama a la función para configurar las opciones del gráfico
       },
       error: () => {
         this.error.set(true);
@@ -59,7 +72,9 @@ export class SensorDataComponent implements OnInit {
       },
     });
   }
+
   translate(): string {
+    // Traducir el tipo de sensor dependiendo del valor recibido
     switch (this.sensorType.toLowerCase()) {
       case 'temperature':
         return 'Temperatura';
@@ -76,20 +91,20 @@ export class SensorDataComponent implements OnInit {
     this.chartOptions = {
       animationEnabled: true,
       theme: 'light2',
-      title: { text: '🌿 Datos del Sensor' },
-      axisX: { valueFormatString: 'MMM DD, YYYY' },
-      axisY: { title: 'Valores' },
+      title: { text: '🌿 Datos del Sensor' }, // Título del gráfico
+      axisX: { valueFormatString: 'MMM DD, YYYY' }, // Formato del eje X
+      axisY: { title: 'Valores' }, // Etiqueta del eje Y
       toolTip: { shared: true },
       legend: { cursor: 'pointer' },
       data: [
         {
-          type: 'line',
+          type: 'line', // Tipo de gráfico
           name: this.translate(),
           showInLegend: true,
           dataPoints: this.sensorData().map(
             (data: { [x: string]: any; date: any }) => ({
-              x: data.date,
-              y: data[this.sensorType],
+              x: data.date, // Asigna la fecha como eje X
+              y: data[this.sensorType], // Asigna el valor del sensor como eje Y
             })
           ),
         },
